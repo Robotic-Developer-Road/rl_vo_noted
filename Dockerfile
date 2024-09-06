@@ -1,5 +1,8 @@
 FROM nvidia/cuda:12.1.0-devel-ubuntu20.04
 
+RUN  sed -i s@/archive.ubuntu.com/@/mirrors.aliyun.com/@g /etc/apt/sources.list
+RUN  apt-get clean
+
 RUN apt-get update && apt-get -y install sudo
 
 ENV NVIDIA_VISIBLE_DEVICES \
@@ -7,7 +10,10 @@ ENV NVIDIA_VISIBLE_DEVICES \
 ENV NVIDIA_DRIVER_CAPABILITIES \
     ${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics
 
-ENV USERNAME <your_username>
+# your name wanted
+ARG your_username
+
+ENV USERNAME $your_username
 ENV HOME /home/$USERNAME
 
 RUN useradd -m $USERNAME && \
@@ -36,9 +42,9 @@ RUN python3 -m venv /venv
 ENV PATH="/venv/bin:$PATH"
 RUN pip3 install networkx==3.1
 RUN pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
-COPY requirements.txt /app/
-WORKDIR /app
+COPY requirements.txt $HOME/vo_rl/
+WORKDIR $HOME/vo_rl
 RUN pip install -r requirements.txt
 
-USER <your_username>
-WORKDIR <path>/vo_rl
+USER $your_username
+WORKDIR $HOME/vo_rl
