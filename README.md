@@ -133,7 +133,7 @@ TUM-RGBD/
 ```
 
 ## Training
-In a first step, set all the necessary training parameters, the path to the dataset, config and logging directory in the `config.py` file.
+In a first step, set all the necessary training parameters, the path to the dataset, config and logging directory in the `config` folder.
 To use wandb for logging, set the `wandb_logging` variable to `True` and specify the wandb tags and group for the specific training run in `config.py` file.
 The wandb initialization is done inside the `ppo.py` file, where the `<entity>` shoud be replaced before running.
 To train the model inside the docker container, run the following command by replacing <GPU_ID> with the GPU ID to be used:
