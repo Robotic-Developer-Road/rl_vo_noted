@@ -180,7 +180,7 @@ class PPO(OnPolicyAlgorithm):
         self.wandb_group = wandb_group
         if self.wandb_logging:
             tags = ['Seed: {}'.format(seed)]
-            if self.wandb_tag is not None and self.wandb_tag is not '':
+            if self.wandb_tag != None and self.wandb_tag != '':
                 tags.append(self.wandb_tag)
 
             agent_dict_config = omegaconf.OmegaConf.to_container(self.config.agent, resolve=True, throw_on_missing=True)
