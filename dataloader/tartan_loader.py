@@ -85,7 +85,9 @@ class TartanLoader:
 
             if self.val_traj_ids != -1 and self.val_traj_ids is not None:
                 self.trajectories_paths = [self.trajectories_paths[i] for i in self.val_traj_ids]
-
+            
+            print("trajectories: ", len(self.trajectories_paths))
+            print("num_envs: ", self.num_envs)
             assert self.num_envs == len(self.trajectories_paths)
         else:
             raise ValueError('Mode {} not defined'.format(self.mode))
@@ -115,7 +117,8 @@ class TartanLoader:
         self.internal_idx = 0
 
         for i_traj, traj_path in enumerate(self.trajectories_paths):
-            self.nr_samples_per_traj[i_traj] = len(os.listdir(os.path.join(traj_path, 'image_left_gray')))
+            # self.nr_samples_per_traj[i_traj] = len(os.listdir(os.path.join(traj_path, 'image_left_gray')))
+            self.nr_samples_per_traj[i_traj] = len(os.listdir(os.path.join(traj_path, 'image_left')))
         self.nr_samples = int(self.nr_samples_per_traj.sum())
 
     @staticmethod
@@ -132,9 +135,14 @@ class TartanLoader:
     def __getitem__(self, idx):
         self.internal_idx += 1
         traj_time_idx = self.internal_idx - self.start_dataloader_idx
-
+        print("1")
+        print("traj_time_idx: ", traj_time_idx)
+        print("self.traj_idx: ", self.traj_idx)
+        print("self.nr_samples_per_traj: ", self.nr_samples_per_traj)
+        print("self.select_new_traj: ", self.select_new_traj)
         self.select_new_traj = np.logical_or(traj_time_idx >= self.nr_samples_per_traj[self.traj_idx],
                                              self.select_new_traj)
+        print("2")
         # Select new trajectories
         if self.mode == 'train':
             self.traj_idx[self.select_new_traj] = torch.randint(0, len(self.trajectories_paths),
@@ -143,21 +151,28 @@ class TartanLoader:
         self.start_dataloader_idx[self.select_new_traj] = self.internal_idx
         new_sequence_mask = self.select_new_traj.copy()
         self.select_new_traj[:] = False
-
         traj_time_idx = (self.internal_idx - self.start_dataloader_idx)
         traj_time_idx = traj_time_idx.astype('int')
-
-        image_paths = [os.path.join(self.trajectories_paths[self.traj_idx[i]], 'image_left_gray',
-                                      '{:06d}_left.jpg'.format(traj_time_idx[i])) for i in range(self.num_envs)]
-
+        print("3")
+        # image_paths = [os.path.join(self.trajectories_paths[self.traj_idx[i]], 'image_left_gray',
+        # image_paths = [os.path.join(self.trajectories_paths[self.traj_idx[i]], 'image_left',
+        #                               '{:06d}_left.jpg'.format(traj_time_idx[i])) for i in range(self.num_envs)]
+        image_paths = [os.path.join(self.trajectories_paths[self.traj_idx[i]], 'image_left',
+                                      '{:06d}_left.png'.format(traj_time_idx[i])) for i in range(self.num_envs)]
+        print("4")
+        print("image_paths", image_paths)
+        print("self.num_envs", self.num_envs)
+        print("self.img_h", self.img_h)
+        print("self.img_w", self.img_w)
         images = svo_env.load_image_batch(image_paths, self.num_envs, self.img_h, self.img_w)
-
+        print("5")
         poses = np.zeros([self.num_envs, 2, 7])
         poses_idx = np.stack([traj_time_idx,
                               np.minimum(traj_time_idx + 1, self.nr_samples_per_traj[self.traj_idx] - 1)], axis=1)
         poses_idx = poses_idx.astype('int')
         for i in range(self.num_envs):
             poses[i, :, :] = self.poses['_'.join(self.trajectories_paths[self.traj_idx[i]].split(os.sep)[2:])][poses_idx[i], :]
+        print("6")
 
         return images, poses, new_sequence_mask
 

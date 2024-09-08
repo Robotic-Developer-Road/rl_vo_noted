@@ -67,16 +67,30 @@ class VecSVOEnv(VecEnv):
 
         self.obs_rms = RunningMeanStd(shape=(1, self.agent_obs_dim_fixed))
         self.obs_rms_new = RunningMeanStd(shape=[1, self.agent_obs_dim_fixed])
+        
+        # show parameters
+        print('==========================================================================================')
+        print('dataset: ', dataset)
+        print('dataset_dir: ', dataset_dir)
+        print('params_yaml_path: ', params_yaml_path)
+        print('calib_yaml_path: ', calib_yaml_path)
+        print('num_envs: ', num_envs)
+        print('mode: ', self.mode)
+        print('val_traj_ids: ', self.val_traj_ids)
+        print('==========================================================================================')
 
         self.env = svo_env.SVOEnv(params_yaml_path, calib_yaml_path, num_envs, initialize_glog)
-
         if dataset == 'tartanair':
             self.dataloader = TartanLoader(dataset_dir, self.mode, self.num_envs, self.val_traj_ids)
         elif dataset == 'euroc':
             self.dataloader = EurocLoader(dataset_dir, self.mode, self.num_envs, self.val_traj_ids)
         elif dataset == 'tum':
             self.dataloader = TumLoader(dataset_dir, self.mode, self.num_envs, self.val_traj_ids)
-        self.dataloader_iter = iter(self.dataloader)
+
+        if self.dataloader is not None:
+            self.dataloader_iter = iter(self.dataloader)
+        else:
+            raise Exception('Invalid dataloader: ', dataset)
 
         self.timing_dict = None
 

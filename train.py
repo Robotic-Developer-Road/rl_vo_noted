@@ -26,10 +26,11 @@ def main(config):
         env = VecSVOEnv(
             config.svo_params_file, config.svo_calib_file,
             config.dataset_dir, config.n_envs, reward_config=config.agent.reward,
-            mode='train', initialize_glog=True)
+            mode='train', initialize_glog=True, dataset=config.dataset_name)
         val_env = VecSVOEnv(
-            config.svo_params_file, config.svo_calib_file, config.dataset_dir, 32,
-            reward_config=config.agent.reward, mode='val', initialize_glog=False)
+            # config.svo_params_file, config.svo_calib_file, config.dataset_dir, 32,
+            config.svo_params_file, config.svo_calib_file, config.dataset_dir, 5,
+            reward_config=config.agent.reward, mode='val', initialize_glog=False, dataset=config.dataset_name)
     else:
         assert False, "Unknown VO algorithm"
 
