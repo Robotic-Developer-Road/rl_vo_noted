@@ -4,3 +4,5 @@ env/utils/__pycache__/
 policies/__pycache__/
 rl_algorithms/__pycache__/
 .history
+.vscode/
+logs/*

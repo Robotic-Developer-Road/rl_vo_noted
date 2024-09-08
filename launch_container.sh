@@ -12,7 +12,7 @@ docker run --privileged --rm -it \
     --volume $path/datasets/TartanAir/:$path/datasets/TartanAir/:ro \
     --volume $path/datasets/EuRoC/:$path/datasets/EuRoC/:ro \
     --volume $path/datasets/TUM-RGBD/:$path/datasets/TUM-RGBD/:ro \
-    --volume $path/rl_vo/log_voRL/:/logs/log_voRL/:rw \
+    --volume $path/rl_vo/logs/log_voRL/:$path/vo_rl/logs/log_voRL/:rw \
     --env="DISPLAY=$DISPLAY" \
     --env="QT_X11_NO_MITSHM=1" \
     --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \

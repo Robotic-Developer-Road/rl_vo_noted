@@ -152,3 +152,170 @@ Additionally, also specify the `OUT_DIR` in the `evaluate_runs.py` file.
 Then, run the following command from the level of the `vo_rl` directory to evaluate the runs:
 
 `python -m evaluation.evaluate_runs`
+
+
+## Usage
+
+
+### Config
+Only `Tartanair` is supported for train now, `euroc` and `tum` are not supported yet. because `sel.mode` in the dataset_loader.py
+
+- Tartanair: just need to download image_left.zip 
+
+### Train
+```bash
+CUDA_VISIBLE_DEVICES=0 HYDRA_FULL_ERROR=1 python train.py
+```
+
+- DEVICE0: Nvidia GeForce RTX 3090
+- DEVICE1: UHD graphics 630
+
+### Problem
+
+check param of `image_width` of `svo_calib_file` your  in `config.yaml` file
+
+#### 1. `Check failed: img.cols == static_cast<int>(cam_->imageWidth()) (640 vs. 752)`
+```shell
+F0907 16:54:42.519456  1385 frame.cpp:76] Check failed: img.cols == static_cast<int>(cam_->imageWidth()) (640 vs. 752) 
+```
+
+```shell
+ruoxi@robot2go:~/rl_vo$ bash launch_container.sh 
+non-network local connections being added to access control list
+current path: /home/ruoxi
+
+==========
+== CUDA ==
+==========
+
+CUDA Version 12.1.0
+
+Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+
+*************************
+** DEPRECATION NOTICE! **
+*************************
+THIS IMAGE IS DEPRECATED and is scheduled for DELETION.
+    https://gitlab.com/nvidia/container-images/cuda/blob/master/doc/support-policy.md
+
+groups: cannot find name for group ID 1000
+ruoxi@robot2go:~/vo_rl$ CUDA_VISIBLE_DEVICES=0 HYDRA_FULL_ERROR=1 python train.py
+Matplotlib created a temporary cache directory at /tmp/matplotlib-chasjv53 because the default path (/home/ruoxi/.config/matplotlib) is not a writable directory; it is highly recommended to set the MPLCONFIGDIR environment variable to a writable directory, in particular to speed up the import of Matplotlib and to better support multiprocessing.
+loaded 1 cameras
+  name = cam
+  size = [752, 480]
+  Projection = Pinhole
+  Focal length = (383.013, 382.392)
+  Principal point = (344.706, 244.327)
+  Distortion: Atan(0.932)
+..............
+loaded 1 cameras
+  name = cam
+  size = [752, 480]
+  Projection = Pinhole
+  Focal length = (383.013, 382.392)
+  Principal point = (344.706, 244.327)
+  Distortion: Atan(0.932)
+Using cuda:0 device
+wandb: (1) Create a W&B account
+wandb: (2) Use an existing W&B account
+wandb: (3) Don't visualize my results
+wandb: Enter your choice: 1
+wandb: You chose 'Create a W&B account'
+wandb: Create an account here: https://wandb.ai/authorize?signup=true
+wandb: Paste an API key from your profile and hit enter, or press ctrl+c to quit: 
+wandb: Appending key for api.wandb.ai to your netrc file: /home/ruoxi/.netrc
+wandb: ERROR Unable to read /home/ruoxi/.netrc
+wandb: Tracking run with wandb version 0.17.9
+wandb: Run data is saved locally in /home/ruoxi/vo_rl/logs/log_voRL/training/<group>/Sep07_03-08-31_<Tag>/wandb/run-20240907_031249-0mlj4f6f
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run legendary-jazz-1
+wandb: ⭐️ View project at https://wandb.ai/sujit/vo_rl
+wandb: 🚀 View run at https://wandb.ai/sujit/vo_rl/runs/0mlj4f6f
+
+.........................
+Iteration:      3
+Total Timestep: 38250
+==========================
+.....
+---------------------------------------------------------------------------------------
+^CTraceback (most recent call last):
+  File "train.py", line 114, in <module>
+    main()
+  File "/venv/lib/python3.8/site-packages/hydra/main.py", line 94, in decorated_main
+    _run_hydra(
+  File "/venv/lib/python3.8/site-packages/hydra/_internal/utils.py", line 394, in _run_hydra
+    _run_app(
+  File "/venv/lib/python3.8/site-packages/hydra/_internal/utils.py", line 457, in _run_app
+    run_and_report(
+  File "/venv/lib/python3.8/site-packages/hydra/_internal/utils.py", line 220, in run_and_report
+    return func()
+  File "/venv/lib/python3.8/site-packages/hydra/_internal/utils.py", line 458, in <lambda>
+    lambda: hydra.run(
+  File "/venv/lib/python3.8/site-packages/hydra/_internal/hydra.py", line 119, in run
+    ret = run_job(
+  File "/venv/lib/python3.8/site-packages/hydra/core/utils.py", line 186, in run_job
+    ret.return_value = task_function(task_cfg)
+  File "train.py", line 105, in main
+    model.learn(
+  File "/home/ruoxi/vo_rl/rl_algorithms/ppo.py", line 347, in learn
+    return super().learn(
+  File "/home/ruoxi/vo_rl/rl_algorithms/on_policy_algorithm.py", line 287, in learn
+    continue_training = self.collect_rollouts(self.env, callback, self.rollout_buffer, n_rollout_steps=self.n_steps)
+  File "/home/ruoxi/vo_rl/rl_algorithms/on_policy_algorithm.py", line 189, in collect_rollouts
+    new_obs, rewards, dones, infos, valid_mask = env.step(clipped_actions, use_gt_initialization=True)
+  File "/home/ruoxi/vo_rl/env/svo_wrapper.py", line 128, in step
+    images, gt_poses, new_seq = self.get_images_pose()
+  File "/home/ruoxi/vo_rl/env/svo_wrapper.py", line 99, in get_images_pose
+    batch = next(self.dataloader_iter)
+  File "/home/ruoxi/vo_rl/dataloader/tartan_loader.py", line 167, in __getitem__
+    images = svo_env.load_image_batch(image_paths, self.num_envs, self.img_h, self.img_w)
+KeyboardInterrupt
+--------------------------------------------------------------------------------
+wandb: | 4.288 MB of 4.288 MB uploaded
+wandb: Run history:
+wandb:          rollout/iteration ▁▅█
+wandb:     rollout/mean_keyframes ▆▁█
+wandb: rollout/ratio_valid_stages ▁▃█
+wandb:         rollout/sum_reward █▁▅
+wandb:   rollout/sum_valid_stages ▁▃█
+wandb:            train/approx_kl ██▁
+wandb:        train/clip_fraction █▇▁
+wandb:           train/clip_range ▁▁▁
+wandb:         train/entropy_loss ▁▅█
+wandb:   train/explained_variance ▁██
+wandb:            train/iteration ▁▅█
+wandb:                 train/loss ▁▅█
+wandb:            train/n_updates ▁▅█
+wandb: train/policy_gradient_loss ▁▅█
+wandb:           train/value_loss █▁▁
+wandb: 
+wandb: Run summary:
+wandb:          rollout/iteration 2
+wandb:     rollout/mean_keyframes 0.52809
+wandb: rollout/ratio_valid_stages 0.19263
+wandb:         rollout/sum_reward -1.36541
+wandb:   rollout/sum_valid_stages 2456
+wandb:            train/approx_kl 0.00372
+wandb:        train/clip_fraction 0.07056
+wandb:           train/clip_range 0.2
+wandb:         train/entropy_loss -2.17906
+wandb:   train/explained_variance -6.85537
+wandb:            train/iteration 3
+wandb:                 train/loss -0.0106
+wandb:            train/n_updates 30
+wandb: train/policy_gradient_loss -0.00327
+wandb:           train/value_loss 0.00113
+wandb: 
+wandb: 🚀 View run misty-disco-30 at: https://wandb.ai/sujit/vo_rl/runs/eyy4f35w
+wandb: ⭐️ View project at: https://wandb.ai/sujit/vo_rl
+wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./logs/log_voRL/training/experiment_1/Sep07_17-00-13_test/wandb/run-20240907_170022-eyy4f35w/logs
+wandb: WARNING The new W&B backend becomes opt-out in version 0.18.0; try it out with `wandb.require("core")`! See https://wandb.me/wandb-core for more information.
+```
