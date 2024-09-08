@@ -8,12 +8,15 @@ import matplotlib.pyplot as plt
 from env.utils.trajectory_alignment import align_umeyama
 from env.utils.compute_error import ate_translation, ate_rotation
 
+user_name = os.getenv("USER", default="ruoxi")
+path = '/home/' + user_name + '/vo_rl'
+
 METHODS = {
-    'with_RL': <path_to_dir>,
-    'wo_RL': <path_to_dir>,
+    'with_RL': path+'/logs/log_voRL/playground/2024-09-08_09-36-25/',
+    'wo_RL': path+'/logs/log_voRL/playground/2024-09-08_09-36-25/',
 }
 VISUALIZE_RESULTS= False
-OUT_DIR = '/logs/log_voRL/playground/Analysis'
+OUT_DIR = path + '/logs/log_voRL/playground/Analysis'
 
 
 def compute_errors(gt_poses, poses):

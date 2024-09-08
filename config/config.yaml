@@ -24,10 +24,15 @@ dataset_name: "tartanair"
 vo_algorithm: "SVO"
 svo_params_file: "/home/ruoxi/vo_rl/svo-lib/svo_env/param/tartan_train.yaml"
 svo_calib_file: "/home/ruoxi/vo_rl/svo-lib/svo_env/param/calib/svo_tartanair_pinhole.yaml"
-policy_path: null  # null if train from scratch
+
+# null if train from scratch, get new policy
+# policy_path: null
+
+# continue use the policy former training
+policy_path: "/home/ruoxi/vo_rl/logs/log_voRL/training/experiment_1/Sep08_01-21-36_test/Policy/iter_00020.pth"
 
 agent:
-  n_epochs: 10
+  n_epochs: 3
   gae_lambda: 0.95
   gamma: 0.6
   n_steps: 250

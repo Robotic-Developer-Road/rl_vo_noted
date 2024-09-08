@@ -53,8 +53,11 @@ class TumLoader:
         self.trajectories_paths.sort()
 
         if self.val_traj_ids != -1 and self.val_traj_ids is not None:
+            print("self.trajectories_paths: ", self.trajectories_paths)
+            print("self.val_traj_ids: ", self.val_traj_ids)
+            print("len(self.trajectories_paths): ", len(self.trajectories_paths))
+            print("self.num_envs: ", self.num_envs)
             self.trajectories_paths = [self.trajectories_paths[i] for i in self.val_traj_ids]
-
         assert self.num_envs == len(self.trajectories_paths)
 
     def extract_trajectory(self, traj_name):

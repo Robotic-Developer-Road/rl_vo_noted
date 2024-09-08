@@ -178,9 +178,13 @@ check param of `image_width` of `svo_calib_file` your  in `config.yaml` file
 ```shell
 F0907 16:54:42.519456  1385 frame.cpp:76] Check failed: img.cols == static_cast<int>(cam_->imageWidth()) (640 vs. 752) 
 ```
-
+- run
 ```shell
 ruoxi@robot2go:~/rl_vo$ bash launch_container.sh 
+```
+
+- lauch focker container
+```shell
 non-network local connections being added to access control list
 current path: /home/ruoxi
 
@@ -205,7 +209,15 @@ THIS IMAGE IS DEPRECATED and is scheduled for DELETION.
     https://gitlab.com/nvidia/container-images/cuda/blob/master/doc/support-policy.md
 
 groups: cannot find name for group ID 1000
+```
+
+- run
+```shell
 ruoxi@robot2go:~/vo_rl$ CUDA_VISIBLE_DEVICES=0 HYDRA_FULL_ERROR=1 python train.py
+```
+
+- output
+```shell
 Matplotlib created a temporary cache directory at /tmp/matplotlib-chasjv53 because the default path (/home/ruoxi/.config/matplotlib) is not a writable directory; it is highly recommended to set the MPLCONFIGDIR environment variable to a writable directory, in particular to speed up the import of Matplotlib and to better support multiprocessing.
 loaded 1 cameras
   name = cam
@@ -318,4 +330,73 @@ wandb: ⭐️ View project at: https://wandb.ai/sujit/vo_rl
 wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
 wandb: Find logs at: ./logs/log_voRL/training/experiment_1/Sep07_17-00-13_test/wandb/run-20240907_170022-eyy4f35w/logs
 wandb: WARNING The new W&B backend becomes opt-out in version 0.18.0; try it out with `wandb.require("core")`! See https://wandb.me/wandb-core for more information.
+```
+
+### Play
+
+- run
+```shell
+CUDA_VISIBLE_DEVICES=0 HYDRA_FULL_ERROR=1 python play.py 
+```
+
+- output
+```shell
+Matplotlib created a temporary cache directory at /tmp/matplotlib-wq6fuhcj because the default path (/home/ruoxi/.config/matplotlib) is not a writable directory; it is highly recommended to set the MPLCONFIGDIR environment variable to a writable directory, in particular to speed up the import of Matplotlib and to better support multiprocessing.
+==========================================================================================
+dataset:  tum
+dataset_dir:  /home/ruoxi/datasets/TUM-RGBD
+params_yaml_path:  /home/ruoxi/vo_rl/svo-lib/svo_env/param/tartan_test.yaml
+calib_yaml_path:  /home/ruoxi/vo_rl/svo-lib/svo_env/param/calib/svo_tartanair_pinhole.yaml
+num_envs:  1
+mode:  val
+val_traj_ids:  [0]
+==========================================================================================
+loaded 1 cameras
+  name = cam
+  size = [640, 480]
+  Projection = Pinhole
+  Focal length = (383.013, 382.392)
+  Principal point = (344.706, 244.327)
+  Distortion: Atan(0.932)
+[TUM Dataloader] Loading trajectories
+{'rgbd_dataset_freiburg1_360': [100, 756], 'rgbd_dataset_freiburg1_desk': [0, 613], 'rgbd_dataset_freiburg1_desk2': [0, 640], 'rgbd_dataset_freiburg1_floor': [0, 1242], 'rgbd_dataset_freiburg1_plant': [0, 1141], 'rgbd_dataset_freiburg1_room': [0, 1362], 'rgbd_dataset_freiburg1_rpy': [10, 723], 'rgbd_dataset_freiburg1_teddy': [0, 1419], 'rgbd_dataset_freiburg1_xyz': [0, 798]}
+self.trajectories_paths:  ['/home/ruoxi/datasets/TUM-RGBD/rgbd_dataset_freiburg1_desk']
+self.val_traj_ids:  [0]
+len(self.trajectories_paths):  1
+self.num_envs:  1
+self.trajectories_paths:  ['/home/ruoxi/datasets/TUM-RGBD/rgbd_dataset_freiburg1_desk']
+self.val_traj_ids:  [0]
+len(self.trajectories_paths):  1
+self.num_envs:  1
+RMS Loded
+100%|███████████████████████████████████████████████████████████████████████████████████████████████▊| 612/613 [00:37<00:00, 16.18it/s]
+============ Results ============
+Nr Valid States: 609.0
+Mean Keyframe  : 1.0
+Total Reward   : 1.040047923189999
+=================================
+```
+
+### evaluate.run
+
+- run
+```shell
+ruoxi@robot2go:~/vo_rl$ python -m evaluation.evaluate_runs
+```
+
+- output
+```shell
+Matplotlib created a temporary cache directory at /tmp/matplotlib-p9jvjy4h because the default path (/home/ruoxi/.config/matplotlib) is not a writable directory; it is highly recommended to set the MPLCONFIGDIR environment variable to a writable directory, in particular to speed up the import of Matplotlib and to better support multiprocessing.
+Method: with_RL, Number of Keyframes: 250.0
+Method: wo_RL, Number of Keyframes: 250.0
+Method: with_RL
+Number of successful trajectory 1.0/1
+Not successful: 
+[]
+---------------------------------------
+Method: wo_RL
+Number of successful trajectory 1.0/1
+Not successful: 
+[]
+---------------------------------------
 ```
