@@ -2,8 +2,8 @@ defaults:
   - hurti_config
   - _self_
 
-eval_log: '/logs/log_voRL/playground/${now:%Y-%m-%d_%H-%M-%S}'
-weight_path : '/logs/log_voRL/training/<path_to_checkpoint_file>'
+eval_log: '/home/ruoxi/vo_rl/logs/log_voRL/playground/${now:%Y-%m-%d_%H-%M-%S}'
+weight_path : '/home/ruoxi/vo_rl/logs/log_voRL/training/<path_to_checkpoint_file>'
 use_rl_actions: False
 max_eval_steps: -1  # -1 if maximum length of trajectories should be taken
 visualize_trajs: False
@@ -19,7 +19,7 @@ test_seq_ids: -1 # -1 for all test sequences
 #nr_seqs: 11
 
 dataset: 'tum'
-dataset_dir: "/datasets/TUM-RGBD"
-svo_calib_file: "/datasets/TUM-RGBD/calibration/tum.yaml"
-svo_params_file: "<path>/vo-rl/svo-lib/svo_env/param/tartan_test.yaml"
+dataset_dir: "/home/ruoxi/datasets/TUM-RGBD"
+svo_calib_file: "/home/ruoxi/datasets/TUM-RGBD/calibration/tum.yaml"
+svo_params_file: "/home/ruoxi/vo_rl/svo-lib/svo_env/param/tartan_test.yaml"
 nr_seqs: 9

@@ -10,19 +10,20 @@ hydra:
 # End Deactivate hydra logging
 
 wandb_logging: True
-wandb_tag: <Tag>
-wandb_group: <group>
-log_path: /logs/log_voRL/training
-n_envs: 100
+wandb_tag: "test"
+wandb_group: experiment_1
+log_path: /home/ruoxi/vo_rl/logs/log_voRL/training
+n_envs: 51
 seed: 0
 total_timesteps: 25e6
 
 val_interval: 10
 
-dataset_dir: <path>
+dataset_dir: "/home/ruoxi/datasets/TartanAir/"
+dataset_name: "tartanair"
 vo_algorithm: "SVO"
-svo_params_file: "<path>/vo-rl/svo-lib/svo_env/param/tartan_train.yaml"
-svo_calib_file: "/datasets/TartanAir/calibration/tartan_pinhole.yaml"
+svo_params_file: "/home/ruoxi/vo_rl/svo-lib/svo_env/param/tartan_train.yaml"
+svo_calib_file: "/home/ruoxi/vo_rl/svo-lib/svo_env/param/calib/svo_tartanair_pinhole.yaml"
 policy_path: null  # null if train from scratch
 
 agent:
