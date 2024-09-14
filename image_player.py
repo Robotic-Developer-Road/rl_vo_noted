@@ -3,22 +3,22 @@ import os
 
 def play_images(image_dir, delay=30):
   """
-  读取指定目录下的图片，并逐张播放。
+  reads the pictures in the specified directory and plays them one by one
 
   Args:
-    image_dir: 存放图片的目录路径。
-    delay: 每次播放图片后等待的毫秒数，用于控制播放速度。
+    image_dir: the path to the directory where the image is stored
+    delay: the number of milliseconds to wait after each image playback to control the playback speed
   """
 
-  # 获取图片列表，并按文件名排序
+  # get a list of images and sort them by file name
   image_list = sorted([os.path.join(image_dir, img) for img in os.listdir(image_dir) if img.endswith(('.jpg', '.png', '.bmp'))])
 
-  # 循环播放每张图片
+  # cycle through each image
   for image_path in image_list:
     img = cv2.imread(image_path)
     cv2.imshow('Image Viewer', img)
 
-    # 按下 'q' 键退出
+    # press the `q` key to exit
     if cv2.waitKey(delay) & 0xFF == ord('q'):
       break
 
