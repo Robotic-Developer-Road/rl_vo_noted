@@ -1,3 +1,9 @@
+# Acknowledgements
+
+Dear authors of the paper `Reinforcement Learning Meets Visual Odometry`,
+
+Thank you for publishing your awesome paper and making your source code available.
+
 # Reinforcement Learning Meets Visual Odometry
 
 <p align="center">
