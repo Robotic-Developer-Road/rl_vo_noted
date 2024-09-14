@@ -379,6 +379,15 @@ Total Reward   : 1.040047923189999
 
 ### evaluate.run
 
+- config param
+
+set the following parameters in `config_eval.yaml`, if you want to `visualize the trajectories` of the evaluation runs.
+```yaml
+use_rl_actions: True
+max_eval_steps: -1  # -1 if maximum length of trajectories should be taken
+visualize_trajs: True    
+use_gt_initialization: True
+```
 - run
 ```shell
 ruoxi@robot2go:~/vo_rl$ python -m evaluation.evaluate_runs
@@ -400,3 +409,19 @@ Not successful:
 []
 ---------------------------------------
 ```
+
+### playground
+
+display of `playground` like this gif:
+
+![gif](./img/playground_image_view.gif)
+
+```shell
+python3 image_player.py logs/log_voRL/playground/2024-09-14_06-44-47/rgbd_dataset_freiburg1_360 100
+```
+
+- arg0 : path to the `playground/xxxxxxxxx/your_test_dataset` folder
+- arg1 : `number` of keyframes to play (0~100)
+  - 10: quick
+  - 30: common
+  - 100: slow 
